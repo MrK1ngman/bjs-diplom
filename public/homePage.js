@@ -1,15 +1,13 @@
-const { response } = require("express");
-
 const logoutButton = new LogoutButton();
 logoutButton.action = () => {
-    ApiConnection.logout(response => {
+    ApiConnector.logout(response => {
         if(response) {
             location.reload();
         }
     });
 }
 
-ApiConnection.current(response => {
+ApiConnector.current(response => {
     if(response) {
         ProfileWidget.showProfile(response.data);
     }
@@ -19,8 +17,8 @@ const ratesBoard = new RatesBoard();
 func = () => {
     ApiConnector.getStocks(response => {
         if(response) {
-            FavoritesWidget.clearTable();
-            FavoritesWidget.fillTable(response.data);
+            ratesBoard.clearTable();
+            ratesBoard.fillTable(response.data);
         }
     });
 }
@@ -48,7 +46,7 @@ moneyManager.conversionMoneyCallback = () => {
     })
 }
 moneyManager.sendMoneyCallback = () => {
-    ApiConnection.transferMoney(data, response => {
+    ApiConnector.transferMoney(data, response => {
         if(response.success) {
             ProfileWidget.showProfile(response.data);
             moneyManager.setMessage(true, "Перевод выполнен");
@@ -58,7 +56,7 @@ moneyManager.sendMoneyCallback = () => {
     })
 }
 const favoritesWidget = new FavoritesWidget();
-ApiConnection.getFavorites(response => {
+ApiConnector.getFavorites(response => {
     if(response) {
         favoritesWidget.clearTable();
         favoritesWidget.fillTable(response.data);
@@ -66,7 +64,7 @@ ApiConnection.getFavorites(response => {
     }
 })
 favoritesWidget.addUserCallback = (data) => {
-    ApiConnection.addUserToFavorites(data, response => {
+    ApiConnector.addUserToFavorites(data, response => {
         if(response.success) {
             favoritesWidget.clearTable();
             favoritesWidget.fillTable(response.data);
@@ -78,7 +76,7 @@ favoritesWidget.addUserCallback = (data) => {
     })
 }
 favoritesWidget.removeUserCallback = (data) => {
-    ApiConnection.removeUserFromFavorites(data, response => {
+    ApiConnector.removeUserFromFavorites(data, response => {
         if(response.success) {
             favoritesWidget.clearTable();
             favoritesWidget.fillTable(response.data);
